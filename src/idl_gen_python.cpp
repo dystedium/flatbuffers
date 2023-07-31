@@ -998,14 +998,21 @@ class PythonGenerator : public BaseGenerator {
       escapedID += "\\x" + IntToStringHex(*it, 2);
     }
 
+    code += "\n";
+    code += Indent + "file_identifier = b\"";
+    code += escapedID;
+    code += "\"\n\n";
+    if (parser_.file_extension_.length()) {
+      code += Indent + "file_extension = \"";
+      code += parser_.file_extension_;
+      code += "\"\n\n";
+    }
     code += Indent + "@classmethod\n";
     code += Indent + "def " + namer_.Type(struct_def);
     code += "BufferHasIdentifier(cls, buf, offset, size_prefixed=False):";
     code += "\n";
     code += Indent + Indent;
-    code += "return flatbuffers.util.BufferHasIdentifier(buf, offset, b\"";
-    code += escapedID;
-    code += "\", size_prefixed=size_prefixed)\n";
+    code += "return flatbuffers.util.BufferHasIdentifier(buf, offset, cls.file_identifier, size_prefixed=size_prefixed)\n";
     code += "\n";
   }
 
