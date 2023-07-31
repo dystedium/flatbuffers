@@ -2024,7 +2024,7 @@ class PythonGenerator : public BaseGenerator {
     if (!generateStructs(&one_file_code, one_file_imports)) return false;
 
     if (parser_.opts.one_file) {
-      const std::string mod = file_name_ + "_generated";
+      const std::string mod = file_name_ + parser_.opts.filename_suffix;
 
       // Legacy file format uses keep casing.
       return SaveType(mod + ".py", *parser_.current_namespace_, one_file_code,
